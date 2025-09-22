@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Expense Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #121212;
+            color: #f1f1f1;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            color: #4cafef;
+            text-align: center;
+        }
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .card {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.6);
+        }
+        .card h2 {
+            color: #ff9800;
+        }
+        .expense {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #333;
+        }
+        button {
+            background: #4cafef;
+            border: none;
+            padding: 10px 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #388ed1;
+        }
+        input, select {
+            padding: 8px;
+            border-radius: 6px;
+            border: none;
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>💰 Expense Tracker Dashboard</h1>
+    <div class="container">
+        <!-- Add Expense -->
+        <div class="card">
+            <h2>Add Expense</h2>
+            <form action="/add" method="post">
+                <label>Category:</label><br>
+                <select name="category">
+                    <option value="Food">Food</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Other">Other</option>
+                </select><br>
+                <label>Amount:</label><br>
+                <input type="number" name="amount" required><br>
+                <button type="submit">Add</button>
+            </form>
+            <a href="/undo"><button>Undo Last Expense</button></a>
+        </div>
+
+        <!-- Expenses Summary -->
+        <div class="card">
+            <h2>Summary</h2>
+            {% for category, amount in expenses.items() %}
+            <div class="expense">
+                <span>{{ category }}</span>
+                <span>₹{{ amount }}</span>
+            </div>
+            {% endfor %}
+            <h3 style="color: #4caf50;">Total: ₹{{ total }}</h3>
+        </div>
+
+        <!-- Transactions -->
+        <div class="card" style="grid-column: span 2;">
+            <h2>Transactions</h2>
+            {% for category, amount, timestamp in transactions %}
+            <div class="expense">
+                <span>{{ category }} (₹{{ amount }})</span>
+                <span>{{ timestamp }}</span>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Sorted Expenses -->
+        <div class="card" style="grid-column: span 2;">
+            <h2>Sorted by Spending</h2>
+            {% for category, amount in sorted_expenses %}
+            <div class="expense">
+                <span>{{ category }}</span>
+                <span>₹{{ amount }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
